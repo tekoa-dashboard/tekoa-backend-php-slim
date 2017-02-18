@@ -3,10 +3,11 @@
     use \Psr\Http\Message\ResponseInterface as Response;
 
     /**
+    * GET
     * HOME
-    * Route "/"
-    * @param {}
-    * Just a simple Hello World! It's works!
+    * JUST A SIMPLE HELLO WORLD! IT'S WORKS!
+    * @route "/"
+    * @params {}
     */
     $app->get('/', function (Request $request, Response $response) {
         $data = array(
@@ -17,7 +18,7 @@
             'Database' => 'MySQL'
         );
 
-        $response = $response->withJson($data);
+        $response = $response->withJson($data, 200);
 
         return $response;
     });
