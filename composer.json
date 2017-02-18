@@ -1,0 +1,17 @@
+{
+    "name": "tekoa/tekoa-backend-php-slim",
+    "description": "PHP API to Tekoá Dashboard using Slim",
+    "type": "project",
+    "require": {
+        "slim/slim": "^3.7",
+        "j4mie/idiorm": "^1.5",
+        "vlucas/phpdotenv": "^2.4"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Luigui Delyer",
+            "email": "tekoa@s1x.com.br"
+        }
+    ]
+}
