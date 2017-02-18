@@ -4,23 +4,34 @@
 
     /**
     * GET
-    * SECTIONS/SECTION
-    * MATCH PARAMETER WITH JSON FILE NAME AND READ THE CONTENT OF THIS SECTION
-    * @route "/sections/name"
-    * @params {string} id THE SECTION NAME
+    * SECTIONS
+    * LIST ALL SECTIONS
+    * @route "/sections"
+    * @params {}
     */
-    $app->get('/sections/{id}', function (Request $request, Response $response, $params) {
+    $this->map(['GET', 'OPTIONS'], '/', function (Request $request, Response $response, $params) {
         try {
             $data = null;
 
-            // Get the JSON file with the characteristics of the section
-            $path = realpath(__DIR__ . '/../../relations/json/' . $params['id'] . '.json');
+            // Get all JSON files
+        	$path = glob(__DIR__ . '/../../../relations/json/*.json');
 
             // If the JSON file be found, open
             if ($path) {
-                $get = file_get_contents($path);
-            	$json = json_decode($get, true);
-                $data = $json;
+                // Set $data as Array to recieve JSON's content
+                $data = [];
+
+            	// Work on each file
+            	foreach($path as $section) {
+                    $section_filtered = basename($section, ".json");
+                    $section_regex = preg_replace('/(model)|(\.json)/is', "", $section_filtered);
+
+                    if($section_regex != ""){
+            			$get = file_get_contents($section);
+            			$json = json_decode($get, true);
+                        $data[$section_filtered] = $json;
+                    }
+            	}
             }
 
             // If content are valid, response to client

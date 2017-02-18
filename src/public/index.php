@@ -23,6 +23,11 @@
     require_once '../config/db-connection.php';
 
     /**
+    * REQUIRE all middlewares
+    */
+    require_once 'middlewares/index.php';
+
+    /**
     * REQUIRE all routes
     */
     require_once 'routes/index.php';
