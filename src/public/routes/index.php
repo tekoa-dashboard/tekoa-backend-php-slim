@@ -4,5 +4,5 @@
     * Route "/"
     * @param {}
     */
-    require 'home/home.php';
+    require_once 'home/home.php';
 ?>

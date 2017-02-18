@@ -1,0 +1,300 @@
+{
+	"access": {
+        "hasOwner": false,
+        "minLevel": 0,
+        "maxLevel": 0
+	},
+	"view": {
+		"fa-icon": "",
+		"title": {
+			"default": "",
+			"l10n": {
+				"enable": false,
+				"attribute": ""
+			}
+		},
+		"description": {
+			"default": "",
+			"l10n": {
+				"enable": false,
+				"attribute": ""
+			}
+		}
+	},
+	"database": {
+		"table": "",
+		"autoReleased": false,
+		"orderBy": "",
+		"ascDesc": "",
+		"limit": 0,
+	},
+	"external": {
+		"url": "",
+		"friendly": {
+			"enable": false,
+			"field": ""
+		}
+	},
+	"fields": [
+		{
+			"type": "photo",
+			"id": "",
+			"label": {
+				"default": "",
+				"l10n": {
+					"enable": false,
+					"attribute": ""
+				}
+			},
+			"validation": {
+				"enable": false,
+				"length": {
+					"min": 0,
+					"max": 0
+				},
+				"message": ""
+			},
+		},
+		{
+			"type": "text",
+			"id": "",
+			"label": {
+				"default": "",
+				"l10n": {
+					"enable": false,
+					"attribute": ""
+				}
+			},
+			"placeholder": {
+				"default": "",
+				"l10n": {
+					"enable": false,
+					"attribute": ""
+				}
+			},
+			"validation": {
+				"enable": true,
+				"length": {
+					"min": 0,
+					"max": 0
+				},
+				"message": ""
+			},
+		},
+		{
+			"type": "textarea",
+			"id": "",
+			"label": {
+				"default": "",
+				"l10n": {
+					"enable": false,
+					"attribute": ""
+				}
+			},
+			"placeholder": {
+				"default": "",
+				"l10n": {
+					"enable": false,
+					"attribute": ""
+				}
+			},
+			"validation": {
+				"enable": true,
+				"length": {
+					"min": 0,
+					"max": 0
+				},
+				"message": ""
+			},
+			"editor": true
+		},
+		{
+			"type": "selection",
+			"id": "",
+			"label": {
+				"default": "",
+				"l10n": {
+					"enable": false,
+					"attribute": ""
+				}
+			},
+			"placeholder": {
+				"default": "",
+				"l10n": {
+					"enable": false,
+					"attribute": ""
+				}
+			},
+			"validation": {
+				"enable": false,
+				"length": {
+					"min": 0,
+					"max": 0
+				},
+				"message": ""
+			},
+			"data": {
+				"remote": {
+					"enable": false,
+					"table": "",
+					"field": ""
+				},
+				"local": [
+					{
+						"default": "",
+						"l10n": {
+							"enable": false,
+							"attribute": ""
+						}
+					},
+					{
+						"default": "",
+						"l10n": {
+							"enable": false,
+							"attribute": ""
+						}
+					}
+				]
+			}
+		}
+	],
+	"statistics": [
+		{
+			"type": "doughnut",
+			"id": "",
+			"label": {
+				"default": "",
+				"l10n": {
+					"enable": false,
+					"attribute": ""
+				}
+			},
+			"data": {
+				"field": "",
+				"relations": [
+					{
+						"operation": "=",
+						"value": 0,
+						"color": "",
+						"label": {
+							"default": "",
+							"l10n": {
+								"enable": false,
+								"attribute": ""
+							}
+						}
+					},
+					{
+						"operation": "=",
+						"value": 1,
+						"color": "",
+						"label": {
+							"default": "",
+							"l10n": {
+								"enable": false,
+								"attribute": ""
+							}
+						}
+					}
+				]
+			}
+		}
+	],
+	"maps": [],
+	"records": {
+		"data": [
+			{
+				"field": "",
+				"label": {
+					"default": "",
+					"l10n": {
+						"enable": false,
+						"attribute": ""
+					}
+				},
+			},
+			{
+				"field": "",
+				"label": {
+					"default": "",
+					"l10n": {
+						"enable": false,
+						"attribute": ""
+					}
+				},
+			},
+			{
+				"field": "",
+				"label": {
+					"default": "",
+					"l10n": {
+						"enable": false,
+						"attribute": ""
+					}
+				},
+			},
+			{
+				"field": "",
+				"label": {
+					"default": "",
+					"l10n": {
+						"enable": false,
+						"attribute": ""
+					}
+				},
+			},
+			{
+				"field": "",
+				"label": {
+					"default": "",
+					"l10n": {
+						"enable": false,
+						"attribute": ""
+					}
+				},
+			}
+		],
+		"view": [
+			{
+				"field": "",
+				"relation": {
+					"table": "",
+					"field": "",
+					"return": ""
+				}
+			},
+			{
+				"field": "",
+				"relation": {
+					"table": "",
+					"field": "",
+					"return": ""
+				}
+			},
+			{
+				"field": "",
+				"relation": {
+					"table": "",
+					"field": "",
+					"return": ""
+				}
+			},
+			{
+				"field": "",
+				"relation": {
+					"table": "",
+					"field": "",
+					"return": ""
+				}
+			},
+			{
+				"field": "",
+				"relation": {
+					"table": "",
+					"field": "",
+					"return": ""
+				}
+			}
+		]
+	}
+}

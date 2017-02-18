@@ -1,26 +1,31 @@
 <?php
     /**
     * REQUIRE composer
+    * DOCS: https://getcomposer.org/
     */
-    require '../../vendor/autoload.php';
+    require_once '../../vendor/autoload.php';
 
     /**
     * REQUIRE .env file and all app configurations
     */
-    require '../config/index.php';
+    require_once '../config/index.php';
 
+    /**
+    * SET Slim Framework
+    * DOCS: https://www.slimframework.com
+    */
     $app = new \Slim\App(["settings" => $config]);
     $container = $app->getContainer();
 
     /**
-    * REQUIRE PDO container and set DB configurations
+    * REQUIRE Idiorm and set DB configurations
     */
-    require 'containers/pdo.php';
+    require_once '../config/db-connection.php';
 
     /**
     * REQUIRE all routes
     */
-    require 'routes/index.php';
+    require_once 'routes/index.php';
 
     $app->run();
 ?>
