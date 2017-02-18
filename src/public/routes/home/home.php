@@ -4,7 +4,7 @@
 
     $app->get('/', function (Request $request, Response $response) {
         $data = array(
-            'Home' => 'Welcome to Tekoá',
+            'Home' => 'Welcome to Tekoá!',
             'Version' => '1.0',
             'Environment' => 'PHP',
             'Framework' => 'Slim',
