@@ -30,12 +30,12 @@
                 $response = $response->withJson($data, 200);
             } else {
                 // Call Exception
-                throw new Exception();
+                throw new Exception('File not found');
             }
         } catch (Exception $e) {
             // Error message
             $data = array(
-                'Error' => '0001'
+                'Error' => $e->getMessage()
             );
             // Create response
             $response = $response->withJson($data, 400);
