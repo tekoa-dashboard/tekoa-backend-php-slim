@@ -44,4 +44,18 @@
         */
         require_once 'content/post/one-content.php';
     });
+
+    /**
+    * GROUP to /upload
+    */
+    $app->group('/upload', function () {
+        /**
+        * POST
+        * UPLOAD/SECTION
+        * RECEIVE FILE AND PERSIST ON DISK
+        * @route "/upload/name"
+        * @params {string} name THE SECTION NAME
+        */
+        require_once 'upload/post/one-content.php';
+    });
 ?>
