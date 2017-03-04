@@ -42,7 +42,7 @@
                         // Verifying if validation is enabled on JSON file
                         if ($json['fields'][$i]['validation']['enable']) {
                             // Verifying if has minimum
-                            if ($json['fields'][$i]['validation']['length']['min']) {
+                            if (isset($json['fields'][$i]['validation']['length']['min'])) {
                                 // If form data length is major than minimum
                                 if (strlen($data[$json['fields'][$i]['id']]) > $json['fields'][$i]['validation']['length']['min']) {
                                     // Verifying if has maximum
@@ -53,7 +53,8 @@
                                             $new_data->$json['fields'][$i]['id'] = $data[$json['fields'][$i]['id']];
                                         } else {
                                             // If form data length is major than maximum
-                                            throw new Exception($json['fields'][$i]['id'] . ": " . $json['fields'][$i]['validation']['length']['max'] . " chars maximum");
+                                            // throw new Exception($json['fields'][$i]['id'] . ": " . $json['fields'][$i]['validation']['length']['max'] . " chars maximum");
+                                            throw new Exception($json['fields'][$i]['validation']['message']);
                                         }
                                     } else {
                                         // Write in database object if has no maximum
@@ -61,7 +62,8 @@
                                     }
                                 } else {
                                     // If form data length is minor than minimum
-                                    throw new Exception($json['fields'][$i]['id'] . ": " . $json['fields'][$i]['validation']['length']['min'] . " chars minimum");
+                                    // throw new Exception($json['fields'][$i]['id'] . ": " . $json['fields'][$i]['validation']['length']['min'] . " chars minimum");
+                                    throw new Exception($json['fields'][$i]['validation']['message']);
                                 }
                             } else {
                                 // If validation is enabled but haven't information to compare values
