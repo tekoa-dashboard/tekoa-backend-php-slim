@@ -76,6 +76,16 @@
                     }
                 }
 
+                //set autoReleased
+                if ($json['database']['autoReleased'] == true) {
+                    $new_data->released = 1;
+                } else {
+                    $new_data->released = 0;
+                }
+
+                //set hidden
+                $new_data->hidden = 0;
+
                 // Finish database object and persist the data
                 $new_data->save();
                 // Receiving information from the database
