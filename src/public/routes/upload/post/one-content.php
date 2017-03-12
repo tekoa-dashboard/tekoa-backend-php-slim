@@ -6,25 +6,13 @@
     * POST
     * UPLOAD/SECTION
     * RECEIVE FILE AND PERSIST ON DISK
-    * @route "/upload/name"
-    * @params {string} name THE SECTION NAME
+    * @route "/upload"
+    * @params {}
     */
-    $this->map(['POST', 'OPTIONS'], '/{name}', function (Request $request, Response $response, $params) {
+    $this->map(['POST', 'OPTIONS'], '', function (Request $request, Response $response, $params) {
         try {
             $data = null;
             $file = null;
-
-            // Get the JSON file with the characteristics of the section
-            $path = realpath(__DIR__ . '/../../../../config/relations/json/' . $params['name'] . '.json');
-
-            // If the JSON file be found, open
-            if ($path) {
-                $get = file_get_contents($path);
-            	$decode = json_decode($get, true);
-                $json = $decode;
-            } else {
-                throw new Exception('File not found');
-            }
 
             // Get request's content
             $file = $request->getUploadedFiles();
@@ -41,7 +29,7 @@
                 	$temp = imagecreatefromjpeg($target);
                 	$x = imagesx($temp);
                 	$y = imagesy($temp);
-                	$height = ($width * $y)/$x;
+                	$height = ($width * $y) / $x;
                 	$newImage = imagecreatetruecolor($width, $height);
                 	imagecopyresampled($newImage, $temp, 0, 0, 0, 0, $width, $height, $x, $y);
                 	imagejpeg($newImage, $target);

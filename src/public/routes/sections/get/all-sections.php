@@ -11,37 +11,17 @@
     */
     $this->map(['GET', 'OPTIONS'], '', function (Request $request, Response $response, $params) {
         try {
-            $data = null;
-
-            // Get all JSON files
-        	$path = glob(__DIR__ . '/../../../../config/relations/json/*.json');
-
-            // If the JSON file be found, open
-            if ($path) {
-                // Set $data as Array to recieve JSON's content
-                $data = [];
-
-            	// Work on each file
-            	foreach($path as $section) {
-                    $section_filtered = basename($section, ".json");
-                    $section_regex = preg_replace('/(model)|(\.json)/is', "", $section_filtered);
-
-                    if($section_regex != ""){
-            			$get = file_get_contents($section);
-            			$json = json_decode($get, true);
-                        $data[$section_filtered] = $json;
-                    }
-            	}
-            }
+            // Get JSON from middleware
+            $json = $request->getAttribute('data');
 
             // If content are valid, response to client
             // If not, call the Exception
-            if ($data != null) {
+            if (!isset($json['Error'])) {
                 // Create response
-                $response = $response->withJson($data, 200);
+                $response = $response->withJson($json, 200);
             } else {
                 // Call Exception
-                throw new Exception('File not found');
+                throw new Exception($json['Error']);
             }
         } catch (Exception $e) {
             // Error message

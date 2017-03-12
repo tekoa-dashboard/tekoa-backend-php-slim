@@ -21,7 +21,8 @@
         }
 
         $response = $next($request, $response);
+        $response->withHeader("Access-Control-Allow-Methods", implode(",", $methods));
 
-        return $response->withHeader("Access-Control-Allow-Methods", implode(",", $methods));
+        return $response;
     });
 ?>

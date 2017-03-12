@@ -6,31 +6,22 @@
     * GET
     * SECTIONS/SECTION
     * MATCH PARAMETER WITH JSON FILE NAME AND READ THE CONTENT OF THIS SECTION
-    * @route "/sections/name"
-    * @params {string} name THE SECTION NAME
+    * @route "/sections/section"
+    * @params {string} section THE SECTION NAME
     */
-    $this->map(['GET', 'OPTIONS'], '/{name}', function (Request $request, Response $response, $params) {
+    $this->map(['GET', 'OPTIONS'], '/{section}', function (Request $request, Response $response, $params) {
         try {
-            $data = null;
-
-            // Get the JSON file with the characteristics of the section
-            $path = realpath(__DIR__ . '/../../../../config/relations/json/' . $params['name'] . '.json');
-
-            // If the JSON file be found, open
-            if ($path) {
-                $get = file_get_contents($path);
-            	$json = json_decode($get, true);
-                $data = $json;
-            }
+            // Get JSON from middleware
+            $json = $request->getAttribute('data');
 
             // If content are valid, response to client
             // If not, call the Exception
-            if ($data != null) {
+            if (!isset($json['Error'])) {
                 // Create response
-                $response = $response->withJson($data, 200);
+                $response = $response->withJson($json, 200);
             } else {
                 // Call Exception
-                throw new Exception('File not found');
+                throw new Exception($json['Error']);
             }
         } catch (Exception $e) {
             // Error message

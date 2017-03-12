@@ -2,7 +2,7 @@
     /**
     * GET
     * HOME
-    * JUST A SIMPLE HELLO WORLD! IT'S WORKS!
+    * JUST A SIMPLE HELLO TEKOÁ! IT'S WORKS!
     * @route "/"
     * @params {}
     */
