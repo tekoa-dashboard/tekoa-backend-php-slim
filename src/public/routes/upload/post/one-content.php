@@ -15,7 +15,7 @@
             $file = null;
 
             // Get the JSON file with the characteristics of the section
-            $path = realpath(__DIR__ . '/../../../relations/json/' . $params['name'] . '.json');
+            $path = realpath(__DIR__ . '/../../../../config/relations/json/' . $params['name'] . '.json');
 
             // If the JSON file be found, open
             if ($path) {

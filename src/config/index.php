@@ -1,15 +1,17 @@
 <?php
     /**
-    * CONFIG DotEnv Composer Package
+    * REQUIRE DotEnv Composer Package
     * DOCS: https://github.com/vlucas/phpdotenv
     */
-    $dotenv = new Dotenv\Dotenv(__DIR__);
-    $dotenv->load();
+    require_once 'dotEnv.php';
 
     /**
-    * CONFIG Slim
+    * REQUIRE Slim Framework
     */
-    $config['displayErrorDetails'] = true;
-    $config['addContentLengthHeader'] = false;
-    $config['determineRouteBeforeAppMiddleware'] = true;
+    require_once 'slim.php';
+
+    /**
+    * REQUIRE Idiorm and set DB configurations
+    */
+    require_once 'idiOrm.php';
 ?>

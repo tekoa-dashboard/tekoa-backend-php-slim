@@ -14,7 +14,7 @@
             $data = null;
 
             // Get all JSON files
-        	$path = glob(__DIR__ . '/../../../relations/json/*.json');
+        	$path = glob(__DIR__ . '/../../../../config/relations/json/*.json');
 
             // If the JSON file be found, open
             if ($path) {

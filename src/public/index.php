@@ -11,18 +11,6 @@
     require_once '../config/index.php';
 
     /**
-    * SET Slim Framework
-    * DOCS: https://www.slimframework.com
-    */
-    $app = new \Slim\App(["settings" => $config]);
-    $container = $app->getContainer();
-
-    /**
-    * REQUIRE Idiorm and set DB configurations
-    */
-    require_once '../config/db-connection.php';
-
-    /**
     * REQUIRE all middlewares
     */
     require_once 'middlewares/index.php';

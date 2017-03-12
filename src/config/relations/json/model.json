@@ -5,28 +5,22 @@
         "maxLevel": 0
 	},
 	"view": {
-		"fa-icon": "",
+		"icon": "",
 		"title": {
 			"default": "",
-			"l10n": {
-				"enable": false,
-				"attribute": ""
-			}
+			"i18n-attribute": ""
 		},
 		"description": {
 			"default": "",
-			"l10n": {
-				"enable": false,
-				"attribute": ""
-			}
+			"i18n-attribute": ""
 		}
 	},
 	"database": {
 		"table": "",
-		"autoReleased": false,
+		"autoReleased": true,
 		"orderBy": "",
 		"ascDesc": "",
-		"limit": 0,
+		"limit": 100
 	},
 	"external": {
 		"url": "",
@@ -37,101 +31,124 @@
 	},
 	"fields": [
 		{
+			"id": "",
 			"type": "photo",
-			"id": "",
+			"public": true,
 			"label": {
 				"default": "",
-				"l10n": {
-					"enable": false,
-					"attribute": ""
-				}
+				"i18n-attribute": ""
 			},
 			"validation": {
-				"enable": false,
+				"required": true,
+				"type": "string",
 				"length": {
 					"min": 0,
-					"max": 0
+					"max": 99
 				},
-				"message": ""
-			},
+				"message": {
+					"default": "",
+					"i18n-attribute": ""
+				}
+			}
 		},
 		{
+			"id": "",
 			"type": "text",
-			"id": "",
+			"public": true,
 			"label": {
 				"default": "",
-				"l10n": {
-					"enable": false,
-					"attribute": ""
-				}
+				"i18n-attribute": ""
 			},
 			"placeholder": {
 				"default": "",
-				"l10n": {
-					"enable": false,
-					"attribute": ""
-				}
+				"i18n-attribute": ""
 			},
 			"validation": {
-				"enable": true,
+				"required": true,
+				"type": "string",
 				"length": {
-					"min": 0,
-					"max": 0
+					"min": 3,
+					"max": 200
 				},
-				"message": ""
-			},
+				"message": {
+					"default": "",
+					"i18n-attribute": ""
+				}
+			}
 		},
 		{
-			"type": "textarea",
 			"id": "",
+			"type": "textarea",
+			"public": true,
 			"label": {
 				"default": "",
-				"l10n": {
-					"enable": false,
-					"attribute": ""
-				}
+				"i18n-attribute": ""
 			},
 			"placeholder": {
 				"default": "",
-				"l10n": {
-					"enable": false,
-					"attribute": ""
-				}
+				"i18n-attribute": ""
 			},
 			"validation": {
-				"enable": true,
+				"required": true,
+				"type": "string",
 				"length": {
-					"min": 0,
-					"max": 0
+					"min": 140,
+					"max": 500
 				},
-				"message": ""
+				"message": {
+					"default": "",
+					"i18n-attribute": ""
+				}
 			},
 			"editor": true
 		},
 		{
-			"type": "selection",
 			"id": "",
+			"type": "check",
+			"public": true,
 			"label": {
 				"default": "",
-				"l10n": {
-					"enable": false,
-					"attribute": ""
-				}
+				"i18n-attribute": ""
 			},
 			"placeholder": {
 				"default": "",
-				"l10n": {
-					"enable": false,
-					"attribute": ""
-				}
+				"i18n-attribute": ""
 			},
 			"validation": {
-				"enable": false,
+				"required": true,
+				"type": "boolean",
+				"options": {
+					"right": true
+				},
+				"message": {
+					"default": "",
+					"i18n-attribute": ""
+				}
+			}
+		},
+		{
+			"id": "",
+			"type": "selection",
+			"public": false,
+			"label": {
+				"default": "",
+				"i18n-attribute": ""
+			},
+			"placeholder": {
+				"default": "",
+				"i18n-attribute": ""
+			},
+			"validation": {
+				"required": false,
+				"type": "",
 				"length": {
 					"min": 0,
 					"max": 0
 				},
-				"message": ""
+				"message": {
+					"default": "",
+					"i18n-attribute": ""
+				}
 			},
 			"data": {
 				"remote": {
@@ -142,17 +159,11 @@
 				"local": [
 					{
 						"default": "",
-						"l10n": {
-							"enable": false,
-							"attribute": ""
-						}
+						"i18n-attribute": ""
 					},
 					{
 						"default": "",
-						"l10n": {
-							"enable": false,
-							"attribute": ""
-						}
+						"i18n-attribute": ""
 					}
 				]
 			}
@@ -164,10 +175,7 @@
 			"id": "",
 			"label": {
 				"default": "",
-				"l10n": {
-					"enable": false,
-					"attribute": ""
-				}
+				"i18n-attribute": ""
 			},
 			"data": {
 				"field": "",
@@ -178,10 +186,7 @@
 						"color": "",
 						"label": {
 							"default": "",
-							"l10n": {
-								"enable": false,
-								"attribute": ""
-							}
+							"i18n-attribute": ""
 						}
 					},
 					{
@@ -190,10 +195,7 @@
 						"color": "",
 						"label": {
 							"default": "",
-							"l10n": {
-								"enable": false,
-								"attribute": ""
-							}
+							"i18n-attribute": ""
 						}
 					}
 				]
@@ -207,51 +209,36 @@
 				"field": "",
 				"label": {
 					"default": "",
-					"l10n": {
-						"enable": false,
-						"attribute": ""
-					}
-				},
+					"i18n-attribute": ""
+				}
 			},
 			{
 				"field": "",
 				"label": {
 					"default": "",
-					"l10n": {
-						"enable": false,
-						"attribute": ""
-					}
-				},
+					"i18n-attribute": ""
+				}
 			},
 			{
 				"field": "",
 				"label": {
 					"default": "",
-					"l10n": {
-						"enable": false,
-						"attribute": ""
-					}
-				},
+					"i18n-attribute": ""
+				}
 			},
 			{
 				"field": "",
 				"label": {
 					"default": "",
-					"l10n": {
-						"enable": false,
-						"attribute": ""
-					}
-				},
+					"i18n-attribute": ""
+				}
 			},
 			{
 				"field": "",
 				"label": {
 					"default": "",
-					"l10n": {
-						"enable": false,
-						"attribute": ""
-					}
-				},
+					"i18n-attribute": ""
+				}
 			}
 		],
 		"view": [

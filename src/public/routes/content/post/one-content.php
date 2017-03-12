@@ -14,7 +14,7 @@
             $data = null;
 
             // Get the JSON file with the characteristics of the section
-            $path = realpath(__DIR__ . '/../../../relations/json/' . $params['name'] . '.json');
+            $path = realpath(__DIR__ . '/../../../../config/relations/json/' . $params['name'] . '.json');
 
             // If the JSON file be found, open
             if ($path) {
@@ -37,43 +37,11 @@
 
                 // Iterate fields provided by JSON file
                 for ($i=0; $i < count($json['fields']); $i++) {
-                    // // Verifying if form passing something on the value
-                    // if (isset($data[$json['fields'][$i]['id']])) {
-                    //     // Verifying if validation is enabled on JSON file
-                    //     if ($json['fields'][$i]['validation']['required']) {
-                    //         // Verifying if has minimum
-                    //         if (isset($json['fields'][$i]['validation']['length']['min'])) {
-                    //             // If form data length is major than minimum
-                    //             if (strlen($data[$json['fields'][$i]['id']]) > $json['fields'][$i]['validation']['length']['min']) {
-                    //                 // Verifying if has maximum
-                    //                 if ($json['fields'][$i]['validation']['length']['max']) {
-                    //                     // If form data length is minor than maximum
-                    //                     if (strlen($data[$json['fields'][$i]['id']]) <= $json['fields'][$i]['validation']['length']['max']) {
-                    //                         // Write in database object
-                    //                         $new_data->$json['fields'][$i]['id'] = $data[$json['fields'][$i]['id']];
-                    //                     } else {
-                    //                         // If form data length is major than maximum
-                    //                         // throw new Exception($json['fields'][$i]['id'] . ": " . $json['fields'][$i]['validation']['length']['max'] . " chars maximum");
-                    //                         throw new Exception($json['fields'][$i]['validation']['message']['default']);
-                    //                     }
-                    //                 } else {
-                    //                     // Write in database object if has no maximum
-                    //                     $new_data->$json['fields'][$i]['id'] = $data[$json['fields'][$i]['id']];
-                    //                 }
-                    //             } else {
-                    //                 // If form data length is minor than minimum
-                    //                 // throw new Exception($json['fields'][$i]['id'] . ": " . $json['fields'][$i]['validation']['length']['min'] . " chars minimum");
-                    //                 throw new Exception($json['fields'][$i]['validation']['message']['default']);
-                    //             }
-                    //         } else {
-                    //             // If validation is enabled but haven't information to compare values
-                    //             throw new Exception("Validation field it's enabled but has not minimum value to compare data form. Verify your section's configuration and try again.");
-                    //         }
-                    //     } else {
-                    //         // Write in database object if validation is not enabled
-                    //         $new_data->$json['fields'][$i]['id'] = $data[$json['fields'][$i]['id']];
-                    //     }
-                    // }
+                    if (isset($data[$json['fields'][$i]['id']]) && !$json['fields'][$i]['public']) {
+                        // If the field has value, but is not public
+                        throw new Exception("Can't save data in the field '" . $json['fields'][$i]['id'] . "', he's not public");
+                        exit;
+                    }
 
                     if (!isset($data[$json['fields'][$i]['id']]) && $json['fields'][$i]['validation']['required']) {
                         // If has no value but field is required
@@ -81,48 +49,41 @@
                         exit;
                     }
 
-                    if (!$json['fields'][$i]['public']) {
-                        // If JSON file has not the requested key
-                        throw new Exception("Can't save data in the field '" . $json['fields'][$i]['id'] . "', he's not public");
-                        exit;
+                    if (!isset($data[$json['fields'][$i]['id']])) {
+                        // If has no value
+                        continue;
                     }
 
-                    if (!$json['fields'][$i]['validation']['required']) {
-                        // Write in database object if validation is not enabled
-                        $new_data->$json['fields'][$i]['id'] = $data[$json['fields'][$i]['id']];
+                    if ($json['fields'][$i]['validation']['required']) {
+                        switch ($json['fields'][$i]['validation']['type']) {
+                            case 'integer':
+                                if (((intval($data[$json['fields'][$i]['id']]) < $json['fields'][$i]['validation']['range']['min']) || (intval($data[$json['fields'][$i]['id']]) > $json['fields'][$i]['validation']['range']['max'])) && $json['fields'][$i]['validation']['range']['max'] != 0) {
+                                    throw new Exception($json['fields'][$i]['validation']['message']['default']);
+                                    exit;
+                                }
+                                break;
 
-                        // return;
+                            case 'string':
+                                if ((strlen($data[$json['fields'][$i]['id']]) < $json['fields'][$i]['validation']['length']['min']) || (strlen($data[$json['fields'][$i]['id']]) > $json['fields'][$i]['validation']['length']['max']) && $json['fields'][$i]['validation']['length']['max'] != 0) {
+                                    throw new Exception($json['fields'][$i]['validation']['message']['default']);
+                                    exit;
+                                }
+                                break;
+
+                            case 'boolean':
+                                if ($data[$json['fields'][$i]['id']] != var_export($json['fields'][$i]['validation']['options']['right'], 1)) {
+                                    throw new Exception("bool " . $json['fields'][$i]['validation']['message']['default']);
+                                    exit;
+                                }
+                                break;
+                        }
                     }
 
-                    if ($json['fields'][$i]['validation']['required'] && !isset($json['fields'][$i]['validation']['length']['min'])) {
-                        // If validation is enabled but haven't minimum to compare values
-                        throw new Exception("Validation field it's enabled but has not minimum value to compare data form. Verify your section's configuration and try again.");
-                    }
-
-                    if (strlen($data[$json['fields'][$i]['id']]) < $json['fields'][$i]['validation']['length']['min']) {
-                        // If form data length is minor than minimum
-                        throw new Exception($json['fields'][$i]['validation']['message']['default']);
-                    }
-
-                    if (!isset($json['fields'][$i]['validation']['length']['max'])) {
-                        // Write in database object if has no maximum
-                        $new_data->$json['fields'][$i]['id'] = $data[$json['fields'][$i]['id']];
-
-                        // return;
-                    }
-
-                    if (strlen($data[$json['fields'][$i]['id']]) <= $json['fields'][$i]['validation']['length']['max']) {
-                        // Write in database object if form data length is minor than maximum
-                        $new_data->$json['fields'][$i]['id'] = $data[$json['fields'][$i]['id']];
-
-                        // return;
-                    } else {
-                        // If form data length is major than maximum
-                        throw new Exception($json['fields'][$i]['validation']['message']['default']);
-                    }
+                    // If all validations are ok, write a new value
+                    $new_data->$json['fields'][$i]['id'] = $data[$json['fields'][$i]['id']];
                 }
 
-                //set autoReleased
+                //get autoReleased
                 if ($json['database']['autoReleased'] == true) {
                     $new_data->released = 1;
                 } else {
@@ -133,22 +94,21 @@
                 $new_data->hidden = 0;
 
                 // Finish database object and persist the data
-                // $new_data->save();
+                $new_data->save();
                 // Receiving information from the database
                 $data = $new_data->as_array();
-                // $data = $new_data;
 
-                // // Get last entry
-                // $new_data = ORM::for_table($json['database']['table'])->find_one($data['id']);
-                // // Convert ID on MD5
-                // $new_data->id_md5 = md5($data['id']);
-                // // Finish database object and persist the data
-                // $new_data->save();
-                // // Receiving information from the database
-                // $data = $new_data->as_array('id_md5');
-                //
-                // // Write response object
-                // $data = array('md5' => $data['id_md5']);
+                // Get last entry
+                $new_data = ORM::for_table($json['database']['table'])->find_one($data['id']);
+                // Convert ID on MD5
+                $new_data->id_md5 = md5($data['id']);
+                // Finish database object and persist the data
+                $new_data->save();
+                // Receiving information from the database
+                $data = $new_data->as_array('id_md5');
+
+                // Write response object
+                $data = array('md5' => $data['id_md5']);
 
                 // Create response
                 $response = $response->withJson($data, 201);
