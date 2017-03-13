@@ -37,7 +37,7 @@
                 }
 
                 //Proccess file and get the extension
-                $extension = end((explode(".", $data)));
+                $extension = end((explode(".", strtolower($data))));
                 //enable to include extension in final file
                 $newName = md5($data + rand()). "." . $extension;
 
@@ -46,9 +46,9 @@
                 $target = $target . '/' . $newName;
 
                 //Verify the extension, only can be uploaded JPG files
-                if ($extension != "jpg") {
+                if ($extension != "jpg" || $extension != "JPG") {
                 	//Send error message
-                	throw new Exception("You try send a " . $extension . " file, but only jpg it's accepted");
+                	throw new Exception("You try send a '." . $extension . "' file, but only '.jpg' it's accepted");
                 } else {
                 	//Upload file, resize and send success message
                 	if (move_uploaded_file($file, $target)) {
@@ -64,7 +64,7 @@
                 $response = $response->withJson($data, 201);
             } else {
                 // Call Exception
-                throw new Exception('Uploaded file not found');
+                throw new Exception('Uploaded file is note present');
             }
         } catch (Exception $e) {
             // Error message
