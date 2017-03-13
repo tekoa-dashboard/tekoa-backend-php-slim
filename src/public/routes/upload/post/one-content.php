@@ -46,7 +46,7 @@
                 $target = $target . '/' . $newName;
 
                 //Verify the extension, only can be uploaded JPG files
-                if ($extension != "jpg" || $extension != "JPG") {
+                if ($extension != "jpg" && $extension != "JPG") {
                 	//Send error message
                 	throw new Exception("You try send a '." . $extension . "' file, but only '.jpg' it's accepted");
                 } else {
