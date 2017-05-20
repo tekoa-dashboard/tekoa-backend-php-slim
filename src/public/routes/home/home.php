@@ -10,6 +10,7 @@
     * @params {}
     */
     $app->get('/', function (Request $request, Response $response) {
+        // Create message
         $data = array(
             'Home' => 'Welcome to Tekoá!',
             'Version' => '1.0',
@@ -18,8 +19,10 @@
             'Database' => 'MySQL'
         );
 
+        // Create response
         $response = $response->withJson($data, 200);
 
+        // send to client
         return $response;
     });
 ?>

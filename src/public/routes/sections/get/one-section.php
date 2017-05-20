@@ -12,9 +12,9 @@
     $this->map(['GET', 'OPTIONS'], '/{section}', function (Request $request, Response $response, $params) {
         try {
             // Get JSON from middleware
-            $json = $request->getAttribute('data');
+            $json = $request->getAttribute('jsonData');
 
-            // If content are valid, response to client
+            // If content are valid, send to client
             // If not, call the Exception
             if (!isset($json['Error'])) {
                 // Create response
@@ -28,11 +28,12 @@
             $data = array(
                 'Error' => $e->getMessage()
             );
+
             // Create response
             $response = $response->withJson($data, 400);
         }
 
-        // Response to client
+        // send to client
         return $response;
     });
 ?>

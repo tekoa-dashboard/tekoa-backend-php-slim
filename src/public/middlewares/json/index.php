@@ -2,76 +2,99 @@
     /**
     * MIDDLEWARE to read JSON files
     */
+    function getOneJSON($section) {
+        // If section exists, try open JSON file
+        if (isset($section)) {
+            // Get the JSON file with the characteristics of the section
+            $path = realpath(__DIR__ . getenv('RELATIONS_FOLDER') . $section . '.json');
+
+            // If the JSON file be found, open
+            if ($path) {
+                $get = file_get_contents($path);
+                $json = json_decode($get, true);
+
+                return $json;
+            }
+        }
+
+        return null;
+    }
+
+    function getAllJSONs() {
+        // Get all JSON files
+        $path = glob(__DIR__ . getenv('RELATIONS_FOLDER') . '*.json');
+
+        // If the JSON file be found, open
+        if ($path) {
+            // Set $data as Array to recieve JSON's content
+            $data = [];
+
+            // Work on each file
+            foreach($path as $section) {
+                $section_filtered = basename($section, ".json");
+                $section_regex = preg_replace('/(model)|(\.json)/is', "", $section_filtered);
+
+                // if this element not match, put on array
+                if($section_regex != ""){
+                    $get = file_get_contents($section);
+                    $json = json_decode($get, true);
+                    $data[$section_filtered] = $json;
+                }
+            }
+
+            return $data;
+        }
+    }
+
     $app->add(function ($request, $response, $next) {
         try {
             // Getting attributes
-            if (!isset($request->getAttribute('routeInfo')[2])) {
+            $attributes = $request->getAttribute('routeInfo');
+
+            if (isset($attributes[1]) && $attributes[1] == 'route0') {
+                // Has no attributes
+                // Create response
                 $response = $next($request, $response);
+
+                // send to client
                 return $response;
-            }
+            } else {
+                // Counting attributes
+                if (isset($attributes[2]) && count($attributes[2]) > 0) {
+                    // Get all params
+                    $params = $attributes[2];
 
-            // Counting attributes
-            if (count($request->getAttribute('routeInfo')[2]) > 0) {
-                // If has attributes
-                $params = $request->getAttribute('routeInfo')[2];
-                $data = null;
+                    // Get section param
+                    $section = $params['section'];
 
-                // If section exists, open JSON file
-                if (isset($params['section'])) {
-                    // Get the JSON file with the characteristics of the section
-                    $path = realpath(__DIR__ . '/../../../config/relations/json/' . $params['section'] . '.json');
+                    // Get JSON data from section
+                    $data = getOneJSON($section);
 
-                    // If the JSON file be found, open
-                    if ($path) {
-                        $get = file_get_contents($path);
-                        $json = json_decode($get, true);
-                        $data = $json;
+                    if ($data == null) {
+                        throw new Exception("Section '" . $section . "' not found");
+                    }
+                } else {
+                    // If has no params with section
+                    // Get all JSON data
+                    $data = getAllJSONs();
+
+                    if ($data == null) {
+                        throw new Exception("You not have sections to show");
                     }
                 }
-            } else {
-                // If has not attributes
-                // Get all JSON files
-            	$path = glob(__DIR__ . '/../../../config/relations/json/*.json');
-
-                // If the JSON file be found, open
-                if ($path) {
-                    // Set $data as Array to recieve JSON's content
-                    $data = [];
-
-                	// Work on each file
-                	foreach($path as $section) {
-                        $section_filtered = basename($section, ".json");
-                        $section_regex = preg_replace('/(model)|(\.json)/is', "", $section_filtered);
-
-                        if($section_regex != ""){
-                			$get = file_get_contents($section);
-                			$json = json_decode($get, true);
-                            $data[$section_filtered] = $json;
-                        }
-                	}
-                }
-            }
-
-            // If content are valid, response to client
-            // If not, call the Exception
-            if ($data != null) {
-                // Create response
-                $request = $request->withAttribute('data', $data);
-            } else {
-                // Call Exception
-                throw new Exception("Section '" . $params['section'] . "' not found");
             }
         } catch (Exception $e) {
             // Error message
             $data = array(
                 'Error' => $e->getMessage()
             );
-
-            // Create response
-            $request = $request->withAttribute('data', $data);
         }
 
+        // Create response
+        $request = $request->withAttribute('jsonData', $data);
         $response = $next($request, $response);
+
+        // send to client
         return $response;
     });
 

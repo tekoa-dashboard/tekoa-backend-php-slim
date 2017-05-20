@@ -23,6 +23,7 @@
         $response = $next($request, $response);
         $response->withHeader("Access-Control-Allow-Methods", implode(",", $methods));
 
+        // send to client
         return $response;
     });
 ?>

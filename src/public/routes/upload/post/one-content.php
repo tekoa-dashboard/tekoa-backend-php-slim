@@ -18,7 +18,7 @@
             $file = $request->getUploadedFiles();
             $data = $request->getParsedBody();
 
-            // If content are valid, response to client
+            // If content are valid, send to client
             // If not, call the Exception
             if ($data != null && $file != null) {
                 $file = $file['file']->file;
@@ -54,6 +54,7 @@
                 	if (move_uploaded_file($file, $target)) {
                 		chageSize($target, "1920");
 
+                        // Create message
                         $data = array('file' => $newName);
                 	} else {
                         throw new Exception('Error sending you file, try again');
@@ -76,7 +77,7 @@
             $response = $response->withJson($data, 400);
         }
 
-        // Response to client
+        // send to client
         return $response;
     });
 ?>
