@@ -3,3 +3,4 @@
 *.json
 !model.json
 .DS_Store
+uploads

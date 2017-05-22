@@ -6,7 +6,7 @@
         // If section exists, try open JSON file
         if (isset($section)) {
             // Get the JSON file with the characteristics of the section
-            $path = realpath(__DIR__ . getenv('RELATIONS_FOLDER') . $section . '.json');
+            $path = realpath(__DIR__ . '/../../../' . getenv('RELATIONS_FOLDER') . $section . '.json');
 
             // If the JSON file be found, open
             if ($path) {
@@ -22,7 +22,7 @@
 
     function getAllJSONs() {
         // Get all JSON files
-        $path = glob(__DIR__ . getenv('RELATIONS_FOLDER') . '*.json');
+        $path = glob(__DIR__ . '/../../../' . getenv('RELATIONS_FOLDER') . '*.json');
 
         // If the JSON file be found, open
         if ($path) {
@@ -35,7 +35,7 @@
                 $section_regex = preg_replace('/(model)|(\.json)/is', "", $section_filtered);
 
                 // if this element not match, put on array
-                if($section_regex != ""){
+                if ($section_regex != ""){
                     $get = file_get_contents($section);
                     $json = json_decode($get, true);
                     $data[$section_filtered] = $json;

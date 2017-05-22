@@ -39,7 +39,7 @@
         * POST
         * CONTENT/SECTION
         * RECEIVE FORM DATA AND CREATE NEW ENTRY ON DATABASE
-        * @route "/contents/name"
+        * @route "/content/name"
         * @params {string} name THE SECTION NAME
         */
         require_once 'content/post/one-content.php';

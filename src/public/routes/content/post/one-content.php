@@ -2,6 +2,113 @@
     use \Psr\Http\Message\ServerRequestInterface as Request;
     use \Psr\Http\Message\ResponseInterface as Response;
 
+    function validationCase($validation, $data, $defaultMessage) {
+        switch ($validation['type']) {
+            case 'integer':
+                if (((intval($data) < $validation['range']['min']) ||
+                    (intval($data) > $validation['range']['max'])) &&
+                    intval($validation['range']['max']) != 0) {
+                    throw new Exception($defaultMessage);
+                    exit;
+                }
+                break;
+
+            case 'string':
+                if (((strlen($data) < $validation['length']['min']) ||
+                    (strlen($data) > $validation['length']['max'])) &&
+                    intval($validation['length']['max']) != 0) {
+                    throw new Exception($defaultMessage);
+                    exit;
+                }
+                break;
+
+            case 'boolean':
+                if ($data != var_export($validation['options']['right'], 1)) {
+                    throw new Exception($defaultMessage);
+                    exit;
+                }
+                break;
+        }
+    }
+
+    function iterateData($field, $data) {
+        $id = $field['id'];
+        $validation = $field['validation'];
+        $defaultMessage = $validation['message']['default'];
+
+        if (isset($data[$id]) && !$field['public']) {
+            // If the field has value, but is not public
+            throw new Exception("Can't save data in the field '" . $id . "', he's not public");
+            exit;
+        }
+
+        if (!isset($data[$id]) && $validation['required']) {
+            // If has no value but field is required
+            throw new Exception($defaultMessage);
+            exit;
+        }
+
+        if (!isset($data[$id])) {
+            // If has no value
+            return;
+        }
+
+        if ($validation['required']) {
+            validationCase($validation, $data[$id], $defaultMessage);
+        }
+
+        // If all validations are ok, write a new value
+        return $data[$id];
+    }
+
+    function ingestingData($json, $data) {
+        $database = $json['database'];
+        $table = $database['table'];
+
+        // Create a new empty entry
+        $newData = ORM::for_table($table)->create();
+
+        // Iterate and mix data with JSON schema
+        // Iterate fields provided by JSON file
+        for ($i=0; $i < count($json['fields']); $i++) {
+            $field = $json['fields'][$i];
+            $id = $field['id'];
+            // If all validations are ok, write a new value
+            $newData->$id = iterateData($field, $data);
+        }
+
+        // Set auto release on field
+        if ($database['autoReleased'] == true) {
+            $newData->released = 1;
+        } else {
+            $newData->released = 0;
+        }
+
+        // Set hidden
+        $newData->hidden = 0;
+
+        // Finish database object and persist the data
+        $newData->save();
+
+        // Receiving information from the database
+        return $newData->as_array();
+    }
+
+    function makeMD5($json, $data) {
+        $database = $json['database'];
+        $md5Key = $database['md5Key'];
+        $table = $database['table'];
+
+        // Get last entry
+        $newData = ORM::for_table($table)->find_one($data[$md5Key]);
+        // Convert value on MD5
+        $newData->md5 = md5($data[$md5Key]);
+        // Finish database object and persist the data
+        $newData->save();
+        // Receiving information from the database
+        return $newData->as_array('md5');
+    }
+
     /**
     * POST
     * CONTENT/SECTION
@@ -9,7 +116,7 @@
     * @route "/content/section"
     * @params {string} section THE SECTION NAME
     */
-    $this->map(['POST', 'OPTIONS'], '/{section}', function (Request $request, Response $response, $params) {
+    $this->map(['POST', 'OPTIONS'], '/{section}', function (Request $request, Response $response) {
         try {
             // Get JSON from middleware
             $json = $request->getAttribute('jsonData');
@@ -17,90 +124,20 @@
             // If content are valid, send to client
             // If not, call the Exception
             if (!isset($json['Error'])) {
-                // Create response
                 // Get request's content
                 $data = $request->getParsedBody();
 
                 // If content are valid, send to client
                 // If not, call the Exception
                 if (!empty($data)) {
-                    // Create a new empty entry
-                    $new_data = ORM::for_table($json['database']['table'])->create();
+                    // Ingesting data
+                    $data = ingestingData($json, $data);
 
-                    // Iterate fields provided by JSON file
-                    for ($i=0; $i < count($json['fields']); $i++) {
-                        if (isset($data[$json['fields'][$i]['id']]) && !$json['fields'][$i]['public']) {
-                            // If the field has value, but is not public
-                            throw new Exception("Can't save data in the field '" . $json['fields'][$i]['id'] . "', he's not public");
-                            exit;
-                        }
-
-                        if (!isset($data[$json['fields'][$i]['id']]) && $json['fields'][$i]['validation']['required']) {
-                            // If has no value but field is required
-                            throw new Exception($json['fields'][$i]['validation']['message']['default']);
-                            exit;
-                        }
-
-                        if (!isset($data[$json['fields'][$i]['id']])) {
-                            // If has no value
-                            continue;
-                        }
-
-                        if ($json['fields'][$i]['validation']['required']) {
-                            switch ($json['fields'][$i]['validation']['type']) {
-                                case 'integer':
-                                    if (((intval($data[$json['fields'][$i]['id']]) < $json['fields'][$i]['validation']['range']['min']) || (intval($data[$json['fields'][$i]['id']]) > $json['fields'][$i]['validation']['range']['max'])) && intval($json['fields'][$i]['validation']['range']['max']) != 0) {
-                                        throw new Exception($json['fields'][$i]['validation']['message']['default']);
-                                        exit;
-                                    }
-                                    break;
-
-                                case 'string':
-                                    if (((strlen($data[$json['fields'][$i]['id']]) < $json['fields'][$i]['validation']['length']['min']) || (strlen($data[$json['fields'][$i]['id']]) > $json['fields'][$i]['validation']['length']['max'])) && intval($json['fields'][$i]['validation']['length']['max']) != 0) {
-                                        throw new Exception($json['fields'][$i]['validation']['message']['default']);
-                                        exit;
-                                    }
-                                    break;
-
-                                case 'boolean':
-                                    if ($data[$json['fields'][$i]['id']] != var_export($json['fields'][$i]['validation']['options']['right'], 1)) {
-                                        throw new Exception($json['fields'][$i]['validation']['message']['default']);
-                                        exit;
-                                    }
-                                    break;
-                            }
-                        }
-
-                        // If all validations are ok, write a new value
-                        $new_data->$json['fields'][$i]['id'] = $data[$json['fields'][$i]['id']];
-                    }
-
-                    //get autoReleased
-                    if ($json['database']['autoReleased'] == true) {
-                        $new_data->released = 1;
-                    } else {
-                        $new_data->released = 0;
-                    }
-
-                    //set hidden
-                    $new_data->hidden = 0;
-
-                    // Finish database object and persist the data
-                    $new_data->save();
-                    // Receiving information from the database
-                    $data = $new_data->as_array();
-
-                    // Get last entry
-                    $new_data = ORM::for_table($json['database']['table'])->find_one($data['id']);
-                    // Convert ID on MD5
-                    $new_data->id_md5 = md5($data['id']);
-                    // Finish database object and persist the data
-                    $new_data->save();
-                    // Receiving information from the database
-                    $data = $new_data->as_array('id_md5');
+                    // Make MD5
+                    $md5 = makeMD5($json, $data);
 
                     // Write response object
-                    $data = array('md5' => $data['id_md5']);
+                    $data = array('Success' => $md5['md5']);
 
                     // Create response
                     $response = $response->withJson($data, 201);
@@ -111,7 +148,7 @@
                 }
             } else {
                 // Call Exception
-                throw new Exception($data['Error']);
+                throw new Exception($json['Error']);
             }
         } catch (Exception $e) {
             // Error message

@@ -20,7 +20,8 @@
 		"autoReleased": true,
 		"orderBy": "",
 		"ascDesc": "",
-		"limit": 100
+		"limit": 100,
+		"md5Key": "id_md5"
 	},
 	"external": {
 		"url": "",

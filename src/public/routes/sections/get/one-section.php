@@ -9,7 +9,7 @@
     * @route "/sections/section"
     * @params {string} section THE SECTION NAME
     */
-    $this->map(['GET', 'OPTIONS'], '/{section}', function (Request $request, Response $response, $params) {
+    $this->map(['GET', 'OPTIONS'], '/{section}', function (Request $request, Response $response) {
         try {
             // Get JSON from middleware
             $json = $request->getAttribute('jsonData');
