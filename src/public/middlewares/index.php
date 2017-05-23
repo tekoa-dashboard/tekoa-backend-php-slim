@@ -9,8 +9,8 @@
     */
     require_once 'allow-methods/index.php';
 
-    // /**
-    // * MIDDLEWARE to read JSON files
-    // */
+    /**
+    * MIDDLEWARE to read JSON files
+    */
     require_once 'json/index.php';
 ?>

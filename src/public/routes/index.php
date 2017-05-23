@@ -16,7 +16,7 @@
         * GET
         * SECTIONS
         * LIST ALL SECTIONS
-        * @route "/sections"
+        * @route "/sections/"
         * @params {}
         */
         require_once 'sections/get/all-sections.php';
@@ -25,8 +25,8 @@
         * GET
         * SECTIONS/SECTION
         * MATCH PARAMETER WITH JSON FILE NAME AND READ THE CONTENT OF THIS SECTION
-        * @route "/sections/name"
-        * @params {string} name THE SECTION NAME
+        * @route "/sections/section"
+        * @params {string} section THE SECTION NAME
         */
         require_once 'sections/get/one-section.php';
     });
@@ -39,8 +39,8 @@
         * POST
         * CONTENT/SECTION
         * RECEIVE FORM DATA AND CREATE NEW ENTRY ON DATABASE
-        * @route "/content/name"
-        * @params {string} name THE SECTION NAME
+        * @route "/content/section"
+        * @params {string} section THE SECTION NAME
         */
         require_once 'content/post/one-content.php';
     });
@@ -53,7 +53,7 @@
         * POST
         * UPLOAD/SECTION
         * RECEIVE FILE AND PERSIST ON DISK
-        * @route "/upload/name"
+        * @route "/upload/"
         * @params {string} name THE SECTION NAME
         */
         require_once 'upload/post/one-content.php';
