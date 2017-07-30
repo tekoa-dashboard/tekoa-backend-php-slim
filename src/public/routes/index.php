@@ -19,7 +19,7 @@
         * @route "/sections/"
         * @params {}
         */
-        require_once 'sections/get/all-sections.php';
+        require_once 'sections/get/all.php';
 
         /**
         * GET
@@ -28,7 +28,7 @@
         * @route "/sections/section"
         * @params {string} section THE SECTION NAME
         */
-        require_once 'sections/get/one-section.php';
+        require_once 'sections/get/one.php';
     });
 
     /**
@@ -42,7 +42,18 @@
         * @route "/content/section"
         * @params {string} section THE SECTION NAME
         */
-        require_once 'content/post/one-content.php';
+        require_once 'content/post/one.php';
+
+        /**
+        * GET
+        * CONTENT/SECTION/PARAM/VALUE
+        * MATCH PARAMETERS AND GET THE CONTENT ON THE DATABASE
+        * @route "/content/section/param/value"
+        * @params {string} section THE SECTION NAME
+        * @params {string} param THE PARAM TO SEARCH IN DATABASE
+        * @params {string} value THE VALUE OF THIS PARAM
+        */
+        require_once 'content/get/one.php';
     });
 
     /**
@@ -56,6 +67,6 @@
         * @route "/upload/"
         * @params {string} name THE SECTION NAME
         */
-        require_once 'upload/post/one-content.php';
+        require_once 'upload/post/one.php';
     });
 ?>
