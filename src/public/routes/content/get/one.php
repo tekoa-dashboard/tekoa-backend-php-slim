@@ -3,9 +3,17 @@
     use \Psr\Http\Message\ResponseInterface as Response;
 
     function findOne($json, $param, $value) {
+        // Extract table name from database
+        $table = $json['database']['table'];
+
+        // Querying from database
+        $query = ORM::for_table($table)->where_equal($param, $value)->find_one()->as_array();
+
         $data = array(
             'param' => $param,
-            'value' => $value
+            'value' => $value,
+            'table' => $table,
+            'query' => $query
         );
 
         return $data;
