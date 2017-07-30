@@ -101,10 +101,13 @@
 
         // Get last entry
         $newData = ORM::for_table($table)->find_one($data[$md5Key]);
+
         // Convert value on MD5
         $newData->md5 = md5($data[$md5Key]);
+
         // Finish database object and persist the data
         $newData->save();
+
         // Receiving information from the database
         return $newData->as_array('md5');
     }
