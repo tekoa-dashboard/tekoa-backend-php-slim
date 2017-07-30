@@ -55,7 +55,7 @@
         * @params {string} limit RESULTS LIMIT
         * @params {string} offset RESULTS OFFSET
         */
-        // require_once 'content/post/one.php';
+        require_once 'content/get/all.php';
 
         /**
         * GET
