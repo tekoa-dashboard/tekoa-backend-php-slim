@@ -7,7 +7,10 @@
         $table = $json['database']['table'];
 
         // Querying from database
-        $query = ORM::for_table($table)->where_equal($param, $value)->find_one()->as_array();
+        $query = ORM::for_table($table)
+            ->where_equal($param, $value)
+            ->find_one()
+            ->as_array();
 
         $data = array(
             'param' => $param,

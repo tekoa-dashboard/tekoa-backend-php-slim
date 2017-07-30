@@ -1,8 +1,20 @@
 {
 	"access": {
-        "hasOwner": false,
-        "minLevel": 0,
-        "maxLevel": 0
+		"external": {
+			"public": {
+				"enable": true,
+				"allowMethods": [
+					"GET",
+					"PUT",
+					"POST"
+				]
+			}
+		},
+		"internal": {
+			"hasOwner": false,
+	        "minLevel": 0,
+	        "maxLevel": 0
+		}
 	},
 	"view": {
 		"icon": "",
