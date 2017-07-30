@@ -2,6 +2,22 @@
     /**
     * MIDDLEWARE to read JSON files
     */
+    function accessContent($json) {
+        $access = $json['access'];
+        $internal = $access['internal']['hasOwner'];
+        $external = $access['external']['public']['enable'];
+
+        if ($internal) {
+            return '401';
+        }
+
+        if (!$external) {
+            return '401';
+        } else {
+            return $json;
+        }
+    }
+
     function getOneJSON($section) {
         // If section exists, try open JSON file
         if (isset($section)) {
@@ -13,7 +29,7 @@
                 $get = file_get_contents($path);
                 $json = json_decode($get, true);
 
-                return $json;
+                return accessContent($json);
             }
         }
 
@@ -27,7 +43,7 @@
         // If the JSON file be found, open
         if ($path) {
             // Set $data as Array to recieve JSON's content
-            $data = [];
+            $json = [];
 
             // Work on each file
             foreach($path as $section) {
@@ -37,12 +53,12 @@
                 // if this element not match, put on array
                 if ($section_regex != ""){
                     $get = file_get_contents($section);
-                    $json = json_decode($get, true);
-                    $data[$section_filtered] = $json;
+                    $data = json_decode($get, true);
+                    $json[$section_filtered] = accessContent($data);
                 }
             }
 
-            return $data;
+            return $json;
         }
     }
 
@@ -72,6 +88,8 @@
 
                     if ($data == null) {
                         throw new Exception("Section '" . $section . "' not found");
+                    } else if ($data == '401') {
+                        throw new Exception("You are not allowed to see this information");
                     }
                 } else {
                     // If has no params with section
@@ -80,6 +98,8 @@
 
                     if ($data == null) {
                         throw new Exception("You not have sections to show");
+                    } else if ($data == '401') {
+                        throw new Exception("You are not allowed to see this information");
                     }
                 }
             }
