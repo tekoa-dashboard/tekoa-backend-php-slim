@@ -5,19 +5,38 @@
     function findOne($json, $param, $value) {
         // Extract table name from database
         $table = $json['database']['table'];
+        $fields = $json['fields'];
+        $data = [];
+
+        // If the request use 'id' on the parameter, change to 'md5' field
+        $param == 'id'
+            ? $param = 'md5'
+            : $param;
 
         // Querying from database
         $query = ORM::for_table($table)
             ->where_equal($param, $value)
-            ->find_one()
-            ->as_array();
+            ->find_one();
 
-        $data = array(
-            'param' => $param,
-            'value' => $value,
-            'table' => $table,
-            'query' => $query
-        );
+        // If query result something, transform in array
+        // else, just print the 'null' result
+        $query
+            ? $query->as_array()
+            : $query;
+
+        // Set the id value from query result
+        $data['id'] = $query['md5']
+            ? $query['md5']
+            : $query['id'];
+
+        // For each field, verify if are public and create the value
+        foreach ($fields as $key) {
+            $public = $key['public'];
+
+            if ($public) {
+                $data[$key['id']] = $query[$key['id']];
+            }
+        }
 
         return $data;
     }

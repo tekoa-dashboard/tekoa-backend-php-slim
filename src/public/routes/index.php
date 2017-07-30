@@ -46,6 +46,19 @@
 
         /**
         * GET
+        * CONTENT/SECTION
+        * LIST ALL CONTENT FROM THIS SECTION MATCHING PARAMETERS
+        * @route "/content/section/orderby/ascdesc/limit/offset"
+        * @params {string} section THE SECTION NAME
+        * @params {string} orderBy ORDERY DATA BY
+        * @params {string} ascDesc SET IF DATA IS ASCENDING OR DESCENDING
+        * @params {string} limit RESULTS LIMIT
+        * @params {string} offset RESULTS OFFSET
+        */
+        // require_once 'content/post/one.php';
+
+        /**
+        * GET
         * CONTENT/SECTION/PARAM/VALUE
         * MATCH PARAMETERS AND GET THE CONTENT ON THE DATABASE
         * @route "/content/section/param/value"
@@ -57,7 +70,7 @@
     });
 
     /**
-    * GROUP to /upload
+    * GROUP to /upload/
     */
     $app->group('/upload', function () {
         /**

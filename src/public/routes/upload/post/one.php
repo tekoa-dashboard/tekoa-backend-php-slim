@@ -141,7 +141,7 @@
                 if ($type || $type === 0) {
                     // Resize the image
                     chageSize($target, $imagesSupported[$type], $newWidth);
-                }    
+                }
             }
 
             return true;
@@ -154,7 +154,7 @@
     * POST
     * UPLOAD/SECTION
     * RECEIVE FILE AND PERSIST ON DISK
-    * @route '/upload'
+    * @route '/upload/'
     * @params {}
     */
     $this->map(['POST', 'OPTIONS'], '/', function (Request $request, Response $response) {
