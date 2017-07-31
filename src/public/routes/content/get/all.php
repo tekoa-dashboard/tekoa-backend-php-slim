@@ -2,14 +2,14 @@
     use \Psr\Http\Message\ServerRequestInterface as Request;
     use \Psr\Http\Message\ResponseInterface as Response;
 
-    function findAll($json, $orderby, $ascdesc, $limit, $offset) {
+    function findAll($json, $section, $orderby, $ascdesc, $limit, $offset) {
         // Extract table name from database
         $table = $json['database']['table'];
         $fields = $json['fields'];
         $data = [];
-        $raw = 'SELECT * FROM ' . $table;
+        $raw = 'SELECT * FROM ' . $table . ' WHERE hidden = 0 ';
 
-        // // Querying from database
+        // Create an raw query from database
         if ($orderby) {
             $raw .= ' ORDER BY ' . $orderby;
         }
@@ -28,24 +28,45 @@
             $raw .= ' OFFSET ' . $offset;
         }
 
+        // Execute the query
         $query = ORM::for_table($table)->raw_query($raw)->find_many()->as_array();
 
-        // // Set the id value from query result
-        // $data['id'] = $query['md5']
-        //     ? $query['md5']
-        //     : $query['id'];
-        //
-        // For each field, verify if are public and create the value
-        for ($i = 0; $i < $query; $i++) {
-            $data[$query[i]] = $query[i];
+        // Iterate on result to remove the 'md5' and 'hidden' fields
+        for ($i = 0; $i < count($query); $i++) {
+            $result = $query[$i]->as_array();
+            $id = $result['md5'];
+
+            // Remove the 'md5' and the 'hidden' fields from results
+            array_splice($result, array_search('md5', array_keys($result)), 1);
+            array_splice($result, array_search('hidden', array_keys($result)), 1);
+
+            // Change the 'id' content to 'md5'
+            $result['id'] = $id;
+
+            // For each result, get the key name
+            foreach (array_keys($result) as $res) {
+                // For each field, verify if are public and create the value
+                foreach ($fields as $field) {
+                    if ($res == $field['id']) {
+                        $public = $field['public'];
+
+                        // If are private field, remove from results
+                        if (!$public) {
+                            array_splice($result, array_search($res, array_keys($result)), 1);
+                        }
+                    }
+                }
+            }
+
+            $data[$i] = $result;
         }
 
+        // Create the response
         $data = array(
-            'orderby' => $orderby,
-            'ascdesc' => $ascdesc,
-            'limit' => $limit,
-            'offset' => $offset,
-            'data' => $data
+            $section => array(
+                'records' => count($data),
+                'data' => $data
+            )
         );
 
         return $data;
@@ -67,6 +88,9 @@
             // Get JSON from middleware
             $json = $request->getAttribute('jsonData');
 
+            // Get section from route
+            $section = $request->getAttribute('section');
+
             // Get orderBy from route
             $orderby = $request->getAttribute('orderby');
 
@@ -83,10 +107,9 @@
             // If not, call the Exception
             if (!isset($json['Error'])) {
                 // Find registry
-                $data = findAll($json, $orderby, $ascdesc, $limit, $offset);
+                $data = findAll($json, $section, $orderby, $ascdesc, $limit, $offset);
 
                 $response = $response->withJson($data, 200);
-                // $response = $response->withJson($json, 200);
             } else {
                 // Call Exception
                 throw new Exception($json['Error']);
