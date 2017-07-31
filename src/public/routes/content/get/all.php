@@ -7,38 +7,45 @@
         $table = $json['database']['table'];
         $fields = $json['fields'];
         $data = [];
+        $raw = 'SELECT * FROM ' . $table;
 
-        // Querying from database
-        $query = ORM::for_table($table)
-            ->where_equal($param, $value)
-            ->find_one();
-
-        // If query result something, transform in array
-        // else, just print the 'null' result
-        $query
-            ? $query->as_array()
-            : $query;
-
-        // Set the id value from query result
-        $data['id'] = $query['md5']
-            ? $query['md5']
-            : $query['id'];
-
-        // For each field, verify if are public and create the value
-        foreach ($fields as $key) {
-            $public = $key['public'];
-
-            if ($public) {
-                $data[$key['id']] = $query[$key['id']];
-            }
+        // // Querying from database
+        if ($orderby) {
+            $raw .= ' ORDER BY ' . $orderby;
         }
 
+        if ($ascdesc == 'asc') {
+            $raw .= ' ASC ';
+        } else if ($ascdesc == 'desc') {
+            $raw .= ' DESC ';
+        }
+
+        if ($limit) {
+            $raw .= ' LIMIT ' . $limit;
+        }
+
+        if ($offset) {
+            $raw .= ' OFFSET ' . $offset;
+        }
+
+        $query = ORM::for_table($table)->raw_query($raw)->find_many()->as_array();
+
+        // // Set the id value from query result
+        // $data['id'] = $query['md5']
+        //     ? $query['md5']
+        //     : $query['id'];
+        //
+        // For each field, verify if are public and create the value
+        for ($i = 0; $i < $query; $i++) {
+            $data[$query[i]] = $query[i];
+        }
 
         $data = array(
             'orderby' => $orderby,
             'ascdesc' => $ascdesc,
             'limit' => $limit,
             'offset' => $offset,
+            'data' => $data
         );
 
         return $data;
@@ -55,7 +62,7 @@
     * @params {string} limit RESULTS LIMIT
     * @params {string} offset RESULTS OFFSET
     */
-    $this->map(['GET', 'OPTIONS'], '/{section}/all[/{orderby}/{ascdesc}/{limit}/{offset}]', function (Request $request, Response $response) {
+    $this->map(['GET', 'OPTIONS'], '/{section}/all[/{orderby}[/{ascdesc}[/{limit}[/{offset}]]]]', function (Request $request, Response $response) {
         try {
             // Get JSON from middleware
             $json = $request->getAttribute('jsonData');
