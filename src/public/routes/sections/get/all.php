@@ -9,7 +9,7 @@
     * @route "/sections"
     * @params {}
     */
-    $this->map(['GET', 'OPTIONS'], '/', function (Request $request, Response $response) {
+    $this->map(['GET', 'OPTIONS'], '/all', function (Request $request, Response $response) {
         try {
             // Get JSON from middleware
             $json = $request->getAttribute('jsonData');
