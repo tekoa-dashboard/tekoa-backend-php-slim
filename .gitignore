@@ -1,5 +1,6 @@
 /vendor/
 .env
+.envProduction
 *.json
 !model.json
 .DS_Store
