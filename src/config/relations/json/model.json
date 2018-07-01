@@ -33,7 +33,8 @@
 		"orderBy": "",
 		"ascDesc": "",
 		"limit": 100,
-		"md5Key": "id"
+		"hashKey": "id",
+		"allowDuplicates": true
 	},
 	"external": {
 		"url": "",

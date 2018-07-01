@@ -29,10 +29,12 @@
                 $get = file_get_contents($path);
                 $json = json_decode($get, true);
 
+                // Verify permissions
                 return accessContent($json);
             }
         }
 
+        // No result
         return null;
     }
 
@@ -54,10 +56,19 @@
                 if ($section_regex != ""){
                     $get = file_get_contents($section);
                     $data = json_decode($get, true);
-                    $json[$section_filtered] = accessContent($data);
+
+                    // Create an object for each section
+                    $json['sections'][] = [
+                      'name' => $section_filtered,
+                      'value' => accessContent($data)
+                    ];
                 }
             }
 
+            // Count sections
+            $json['count'] = count($json['sections']);
+
+            // Return value
             return $json;
         }
     }

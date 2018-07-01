@@ -94,22 +94,22 @@
         return $newData->as_array();
     }
 
-    function makeMD5($json, $data) {
+    function makeHash($json, $data) {
         $database = $json['database'];
-        $md5Key = $database['md5Key'];
+        $hashKey = $database['hashKey'];
         $table = $database['table'];
 
         // Get last entry
-        $newData = ORM::for_table($table)->find_one($data[$md5Key]);
+        $newData = ORM::for_table($table)->find_one($data[$hashKey]);
 
-        // Convert value on MD5
-        $newData->md5 = md5($data[$md5Key]);
+        // Convert value on Hash
+        $newData->hash = hash_hmac('sha256', $data[$hashKey], getenv('HASH_KEY'));
 
         // Finish database object and persist the data
         $newData->save();
 
         // Receiving information from the database
-        return $newData->as_array('md5');
+        return $newData->as_array('hash');
     }
 
     /**
@@ -136,11 +136,11 @@
                     // Ingesting data
                     $data = ingestingData($json, $data);
 
-                    // Make MD5
-                    $md5 = makeMD5($json, $data);
+                    // Make Hash
+                    $hash = makeHash($json, $data);
 
                     // Write response object
-                    $data = array('Success' => $md5['md5']);
+                    $data = array('Success' => $hash['hash']);
 
                     // Create response
                     $response = $response->withJson($data, 201);

@@ -31,17 +31,17 @@
         // Execute the query
         $query = ORM::for_table($table)->raw_query($raw)->find_many()->as_array();
 
-        // Iterate on result to remove the 'md5' and 'hidden' fields
+        // Iterate on result to remove the 'hash' and 'hidden' fields
         for ($i = 0; $i < count($query); $i++) {
             $result = $query[$i]->as_array();
-            $md5 = $result['md5'];
+            $hash = $result['hash'];
 
-            // Remove the 'md5' and the 'hidden' fields from results
-            array_splice($result, array_search('md5', array_keys($result)), 1);
+            // Remove the 'hash' and the 'hidden' fields from results
+            array_splice($result, array_search('hash', array_keys($result)), 1);
             array_splice($result, array_search('hidden', array_keys($result)), 1);
 
-            // Change the 'id' content to 'md5'
-            $result['id'] = $md5;
+            // Change the 'id' content to 'hash'
+            $result['id'] = $hash;
 
             // For each result, get the key name
             foreach (array_keys($result) as $res) {

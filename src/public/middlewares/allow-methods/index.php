@@ -10,12 +10,12 @@
         if (!empty($route)) {
             $pattern = $route->getPattern();
 
+            // Methods holds all of the HTTP Verbs that a particular route handles.
             foreach ($this->router->getRoutes() as $route) {
                 if ($pattern === $route->getPattern()) {
                     $methods = array_merge_recursive($methods, $route->getMethods());
                 }
             }
-            //Methods holds all of the HTTP Verbs that a particular route handles.
         } else {
             $methods[] = $request->getMethod();
         }
