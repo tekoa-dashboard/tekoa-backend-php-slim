@@ -68,7 +68,6 @@
                 $data = findOne($json, $param, $value);
 
                 $response = $response->withJson($data, 200);
-                // $response = $response->withJson($json, 200);
             } else {
                 // Call Exception
                 throw new Exception($json['Error']);

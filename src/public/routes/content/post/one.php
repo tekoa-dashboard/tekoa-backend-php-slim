@@ -147,7 +147,6 @@
                 } else {
                     // Call Exception
                     throw new Exception('Data form not found. Provide some data to save.');
-                    // throw new Exception(!empty($data));
                 }
             } else {
                 // Call Exception

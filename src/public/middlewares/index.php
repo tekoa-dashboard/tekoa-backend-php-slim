@@ -13,4 +13,9 @@
     * MIDDLEWARE to read JSON files
     */
     require_once 'json/index.php';
+
+    /**
+    * MIDDLEWARE to authenticate
+    */
+    require_once 'auth/index.php';
 ?>

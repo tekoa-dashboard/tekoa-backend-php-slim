@@ -5,7 +5,8 @@
     "require": {
         "slim/slim": "^3.7",
         "j4mie/idiorm": "^1.5",
-        "vlucas/phpdotenv": "^2.4"
+        "vlucas/phpdotenv": "^2.4",
+        "gamegos/jws": "^1.0"
     },
     "license": "MIT",
     "authors": [

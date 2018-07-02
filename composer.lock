@@ -4,8 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "8b11bfee867393004921ae6114784093",
-    "content-hash": "52848f0c3d8824fa67817c773973d23d",
+    "content-hash": "ca121b8002f8eb074a3d1d252d65272a",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -36,7 +35,57 @@
             ],
             "description": "Promoting the interoperability of container objects (DIC, SL, etc.)",
             "homepage": "https://github.com/container-interop/container-interop",
-            "time": "2017-02-14 19:40:03"
+            "time": "2017-02-14T19:40:03+00:00"
+        },
+        {
+            "name": "gamegos/jws",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/gamegos/php-jws.git",
+                "reference": "a94218e43f45d4e818eecaaa4063ff436b4a5ee0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/gamegos/php-jws/zipball/a94218e43f45d4e818eecaaa4063ff436b4a5ee0",
+                "reference": "a94218e43f45d4e818eecaaa4063ff436b4a5ee0",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "4.1.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Gamegos\\JWS\\": [
+                        "src",
+                        "tests"
+                    ]
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Mustafa Altun",
+                    "email": "gmail@mustafaaltun.com"
+                }
+            ],
+            "description": "Json Web Signature (JWS) PHP implementation",
+            "keywords": [
+                "JSON Web Signature",
+                "JSON Web Token",
+                "JWS",
+                "digital signature",
+                "jwa",
+                "jwt"
+            ],
+            "time": "2015-04-09T08:33:49+00:00"
         },
         {
             "name": "j4mie/idiorm",
@@ -97,7 +146,7 @@
                 "orm",
                 "query builder"
             ],
-            "time": "2016-12-14 06:28:26"
+            "time": "2016-12-14T06:28:26+00:00"
         },
         {
             "name": "nikic/fast-route",
@@ -140,7 +189,7 @@
                 "router",
                 "routing"
             ],
-            "time": "2017-01-19 11:35:12"
+            "time": "2017-01-19T11:35:12+00:00"
         },
         {
             "name": "pimple/pimple",
@@ -186,7 +235,7 @@
                 "container",
                 "dependency injection"
             ],
-            "time": "2015-09-11 15:10:35"
+            "time": "2015-09-11T15:10:35+00:00"
         },
         {
             "name": "psr/container",
@@ -235,7 +284,7 @@
                 "container-interop",
                 "psr"
             ],
-            "time": "2017-02-14 16:28:37"
+            "time": "2017-02-14T16:28:37+00:00"
         },
         {
             "name": "psr/http-message",
@@ -285,7 +334,7 @@
                 "request",
                 "response"
             ],
-            "time": "2016-08-06 14:39:51"
+            "time": "2016-08-06T14:39:51+00:00"
         },
         {
             "name": "slim/slim",
@@ -355,7 +404,7 @@
                 "micro",
                 "router"
             ],
-            "time": "2016-12-20 20:30:47"
+            "time": "2016-12-20T20:30:47+00:00"
         },
         {
             "name": "vlucas/phpdotenv",
@@ -405,7 +454,7 @@
                 "env",
                 "environment"
             ],
-            "time": "2016-09-01 10:05:43"
+            "time": "2016-09-01T10:05:43+00:00"
         }
     ],
     "packages-dev": [],

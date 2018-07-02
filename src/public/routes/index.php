@@ -9,6 +9,41 @@
     require_once 'home/home.php';
 
     /**
+    * GROUP to /auth
+    */
+    $app->group('/auth', function () {
+        /**
+        * POST
+        * AUTH/LOGIN
+        * AUTHENTICATE USER
+        * @route "/auth/login"
+        * @params {string} user USER NAME OR ANOTHER FIELD DEFINED ON THE SETTINGS
+        * @params {string} password USER PASSWORD
+        */
+        require_once 'auth/post/login.php';
+
+        /**
+        * POST
+        * AUTH/LOGOUT
+        * DEAUTHENTICATE USER
+        * @route "/auth/logout"
+        * @params {}
+        * @header {string} Authorization BEARER JWT IS REQUIRED
+        */
+        // require_once 'auth/post/logout.php';
+
+        /**
+        * GET
+        * AUTH/ME
+        * LIST USER INFO
+        * @route "/auth/me"
+        * @params {}
+        * @header {string} Authorization BEARER JWT IS REQUIRED
+        */
+        // require_once 'auth/get/me.php';
+    });
+
+    /**
     * GROUP to /sections
     */
     $app->group('/sections', function () {
