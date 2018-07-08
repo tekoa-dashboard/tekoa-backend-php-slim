@@ -18,43 +18,13 @@
     }
 
     // Encrypt password using key from env to compare on database
-    $password = hash_hmac('sha256', $password, getenv('HASH_CONTENT_KEY'));
+    $password = encryptPass($password);
 
     // Return data
     return array(
       'user' => $user,
       'password' => $password
     );
-  }
-
-  function verifyCredentials($data) {
-    // Acquire data from form
-    $user = $data['user'];
-    $password = $data['password'];
-
-    // Querying from database
-    $query = ORM::for_table(
-        getenv('DB_USERS_TABLE')
-      )
-      ->where(
-        array(
-          getenv('DB_USER_DEFAULT_FIELD') => $user,
-          'password' => $password
-        )
-      )
-      ->find_one();
-
-    if (!$query) {
-      // Call Exception
-      throw new Exception("User or password are incorrect. Is not possible make login now, verify the information provided and try again.");
-      exit;
-    }
-
-    // If query result something, transform in array
-    // else, just return the 'null' result
-    return $query
-      ? $query->as_array()
-      : $query;
   }
 
   function makeJWT($data) {
@@ -64,7 +34,7 @@
     $password = $data['password'];
 
     // Encrypt password again using key from env to write on JWT
-    $password = hash_hmac('sha256', $password, getenv('HASH_CONTENT_KEY'));
+    $password = encryptPass($password);
 
     // Config JWT encoder
     $headers = array(
@@ -77,7 +47,7 @@
       'info' => array(
         'id' => $id,
         'user' => $user,
-        'pass' => $password
+        'password' => $password
       ),
       'sub' => $user,
       'iat' => time(),
