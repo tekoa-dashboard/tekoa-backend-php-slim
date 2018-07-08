@@ -113,6 +113,7 @@
             } else {
                 // Call Exception
                 throw new Exception($json['Error']);
+                exit;
             }
         } catch (Exception $e) {
             // Error message

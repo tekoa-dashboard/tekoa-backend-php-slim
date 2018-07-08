@@ -101,7 +101,7 @@
                 if (empty($type) && $type !== 0) {
                     // Send error message
                     throw new Exception("You try send a '." . $extension . "' file, but only '." . implode("' or '.", $fileTypes) . "' are supported");
-                    return;
+                    exit;
                 }
             }
         }
@@ -186,6 +186,7 @@
                     $data = array('file' => $newName);
             	} else {
                     throw new Exception('Error sending you file, try again');
+                    exit;
                 }
 
                 // Create response
@@ -193,6 +194,7 @@
             } else {
                 // Call Exception
                 throw new Exception('You need put file attached');
+                exit;
             }
         } catch (Exception $e) {
             // Error message

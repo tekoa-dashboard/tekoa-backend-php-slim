@@ -147,10 +147,12 @@
                 } else {
                     // Call Exception
                     throw new Exception('Data form not found. Provide some data to save.');
+                    exit;
                 }
             } else {
                 // Call Exception
                 throw new Exception($json['Error']);
+                exit;
             }
         } catch (Exception $e) {
             // Error message

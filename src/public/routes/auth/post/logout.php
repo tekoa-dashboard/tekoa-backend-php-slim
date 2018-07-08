@@ -29,6 +29,7 @@
               } else {
                   // Call Exception
                   throw new Exception('Data form not found. Provide some data to login.');
+                  exit;
               }
         } catch (Exception $e) {
             // Error message

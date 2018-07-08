@@ -30,30 +30,9 @@
       $key = getenv('HASH_KEY');
 
       $jws = new \Gamegos\JWS\JWS();
-      return $jws->encode($headers, $payload, $key);
-      // die(var_dump($jws));
-    }
+      $hash = $jws->encode($headers, $payload, $key);
 
-    function validateCookie($cookie) {
-      if (count($cookie) > 0 &&
-          (!empty($_COOKIE['tekoá']) ||
-            isset($_COOKIE['tekoá']))) {
-        // Secret key
-        $key = getenv('HASH_KEY');
-
-        //jws encoded string
-        $jwsString = $_COOKIE['tekoá'];
-
-        $jws = new \Gamegos\JWS\JWS();
-        $teste = $jws->verify($jwsString, $key);
-
-        die(var_dump($teste));
-        // Call Exception
-        throw new Exception('You already logged');
-        exit;
-      }
-
-      return true;
+      return $hash;
     }
 
     /**
@@ -66,36 +45,38 @@
     */
     $this->map(['POST', 'OPTIONS'], '/login', function (Request $request, Response $response) {
         try {
-          // Verify cookie
-          validateCookie($request->getHeader('Cookie'));
+          $jwt = $request->getAttribute('jwt');
 
           // Get request's content
           $data = $request->getParsedBody();
 
-          // If content are valid, send to client
-          // If not, call the Exception
-          if (!empty($data)) {
-              // Make Login
-              $hash = makeLogin($data);
+          // If middleware return some error, call the Exception
+          if (isset($jwt['Error'])) {
+            // Call Exception
+            throw new Exception($jwt['Error']);
+            exit;
+          }
 
-              if ($hash) {
-                // Write response object
-                $data = array('Success' => $hash);
+          // If have no data, call the Exception
+          if (empty($data)) {
+            // Call Exception
+            throw new Exception('Data form not found. Provide some data to login.');
+            exit;
+          }
 
-                // Set cookie on client
-                setcookie('tekoá', $hash, time()+3600);
+          // Make Login
+          $hash = makeLogin($data);
 
-                // Create response
-                $response = $response->withJson($data, 201);
-              } else {
-                // Call Exception
-                throw new Exception('Was not possible to make login. Try again.');
-                exit;
-              }
+          if ($hash) {
+            // Write response object
+            $data = array('Success' => $hash);
+
+            // Create response
+            $response = $response->withJson($data, 201);
           } else {
-              // Call Exception
-              throw new Exception('Data form not found. Provide some data to login.');
-              exit;
+            // Call Exception
+            throw new Exception('Was not possible to make login. Try again.');
+            exit;
           }
         } catch (Exception $e) {
             // Error message
