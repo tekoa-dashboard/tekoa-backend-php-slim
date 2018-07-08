@@ -2,17 +2,6 @@
     use \Psr\Http\Message\ServerRequestInterface as Request;
     use \Psr\Http\Message\ResponseInterface as Response;
 
-    // function verifyExpirationTime($token) {
-    //   $jws = new \Gamegos\JWS\JWS();
-    //   $jwtContent = $jws->verify($token, $key);
-    //   if ($token['payload']['iat'] &&
-    //       $token['payload']['iat'] > time() - 3600) {
-    //     // Call Exception
-    //     throw new Exception('You already logged in');
-    //     exit;
-    //   }
-    // }
-
     function makeLogin($data) {
       $user = $data['user'];
       $password = $data['password'];
@@ -33,12 +22,18 @@
 
       // Content to serialize
       $payload = array(
+        'info' => array(
+          'id' => '84b8e4fe93301ed225a0d8bb40c0e90e38818cae4d1e84b4036c5fa926cf9a5b',
+          'user' => $user,
+          'pass' => hash_hmac('sha256', $password, getenv('HASH_PASSWORD_KEY'))
+        ),
         'sub' => $user,
-        'iat' => time()
+        'iat' => time(),
+        'exp' => time() + getenv('JWT_EXPIRATION_TIME')
       );
 
       // Secret key
-      $key = getenv('HASH_KEY');
+      $key = getenv('HASH_JWT_KEY');
 
       $jws = new \Gamegos\JWS\JWS();
       $hash = $jws->encode($headers, $payload, $key);

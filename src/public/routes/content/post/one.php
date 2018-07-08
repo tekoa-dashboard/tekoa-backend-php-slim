@@ -103,7 +103,7 @@
         $newData = ORM::for_table($table)->find_one($data[$hashKey]);
 
         // Convert value on Hash
-        $newData->hash = hash_hmac('sha256', $data[$hashKey], getenv('HASH_KEY'));
+        $newData->hash = hash_hmac('sha256', $data[$hashKey] . time(), getenv('HASH_DATA_KEY'));
 
         // Finish database object and persist the data
         $newData->save();
