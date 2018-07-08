@@ -23,16 +23,6 @@
         require_once 'auth/post/login.php';
 
         /**
-        * POST
-        * AUTH/LOGOUT
-        * DEAUTHENTICATE USER
-        * @route "/auth/logout"
-        * @params {}
-        * @header {string} Authorization BEARER JWT IS REQUIRED
-        */
-        // require_once 'auth/post/logout.php';
-
-        /**
         * GET
         * AUTH/ME
         * LIST USER INFO

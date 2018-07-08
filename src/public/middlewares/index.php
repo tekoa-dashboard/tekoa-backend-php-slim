@@ -18,4 +18,9 @@
     * MIDDLEWARE to authenticate
     */
     require_once 'auth/index.php';
+
+    /**
+    * MIDDLEWARE to rewrite responses
+    */
+    require_once 'messages/index.php';
 ?>

@@ -2,6 +2,17 @@
     use \Psr\Http\Message\ServerRequestInterface as Request;
     use \Psr\Http\Message\ResponseInterface as Response;
 
+    // function verifyExpirationTime($token) {
+    //   $jws = new \Gamegos\JWS\JWS();
+    //   $jwtContent = $jws->verify($token, $key);
+    //   if ($token['payload']['iat'] &&
+    //       $token['payload']['iat'] > time() - 3600) {
+    //     // Call Exception
+    //     throw new Exception('You already logged in');
+    //     exit;
+    //   }
+    // }
+
     function makeLogin($data) {
       $user = $data['user'];
       $password = $data['password'];
@@ -45,10 +56,18 @@
     */
     $this->map(['POST', 'OPTIONS'], '/login', function (Request $request, Response $response) {
         try {
+          // Get JWT info from middleware
           $jwt = $request->getAttribute('jwt');
 
           // Get request's content
           $data = $request->getParsedBody();
+
+          // If user's already logged in
+          if ($jwt['logged']) {
+            // Call Exception
+            throw new Exception('You already logged in!');
+            exit;
+          }
 
           // If middleware return some error, call the Exception
           if (isset($jwt['Error'])) {

@@ -50,10 +50,11 @@
       }
 
       if ($jwtContent['payload']['iat'] &&
-      $jwtContent['payload']['iat'] > time() - 3600) {
-        // Call Exception
-        throw new Exception('You already logged in');
-        exit;
+          $jwtContent['payload']['iat'] > time() - 3600) {
+        // Return that user already logged in
+        return array(
+          'logged' => true
+        );
       }
     }
   }
@@ -61,9 +62,9 @@
   $app->add(function ($request, $response, $next) {
     // Get header
     $auth = $request->getHeader('Authorization');
-    
+
     try {
-      // Verify cookie
+      // Verify token
       $data = validateToken($auth);
 
     } catch (Exception $e) {
