@@ -26,12 +26,14 @@
     if ($jwt['payload']['iat'] &&
         $jwt['payload']['exp'] &&
         $jwt['payload']['exp'] > time()) {
-
       $verifyCredentials = verifyCredentials($jwt['payload']['info']);
-      // Return that user already logged in
-      return array(
-        'logged' => true
-      );
+
+      if ($verifyCredentials) {
+        // Return that user already logged in
+        return array(
+          'logged' => true
+        );
+      }
     }
   }
 
@@ -47,27 +49,26 @@
     );
 
     // If have ID, password it's not necessary now
-    if (isset($id) &&
-        !empty($id)) {
-      $query->where(
+    if ($id) {
+      $query = $query->where(
         array(
           'hash' => $id,
           getenv('DB_USER_DEFAULT_FIELD') => $user
         )
       );
     } else {
-      $query->where(
+      $query = $query->where(
         array(
           getenv('DB_USER_DEFAULT_FIELD') => $user,
           'password' => $password
         )
       );
     }
-    $query->find_one();
+    $query = $query->find_one();
 
     if (!$query ||
         (isset($id) &&
-        !empty($id) &&
+        $query['password'] &&
         encryptPass($query['password']) !== $password)) {
       // Call Exception
       throw new Exception("User or password are incorrect. Is not possible make login now, verify the information provided and try again.");
